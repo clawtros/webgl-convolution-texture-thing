@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+     body {
+       font-family: monospace;
+       margin: 0;
+       display: flex;
+       height: 100vh;
+       background-size: 50vmin;
+     }
+     canvas {
+       margin: auto;
+       border: 2px solid white;
+     }
+
+     [role="menu"] {
+       padding: 20px;
+       background-color: white;
+       position: absolute;
+       right: 0;
+       top: 0;
+     }
+     .kernel {
+       transition: background-color 0.25s;
+       cursor: pointer;
+       padding: 10px;
+       position: relative;
+     }
+     .kernel:hover {
+       background-color: rgb(241, 241, 241);
+     }
+     .kernel:hover:after {
+       content: "+";
+       position: absolute;
+       right: 10px;
+     }
+     .kernel-element {
+       margin: 0 1em 1em 0;
+     }
+     ul.applied-kernels li {
+       list-style-type: none;
+       padding: 10px;
+       position: relative;
+       cursor: pointer;
+     }
+
+     ul.applied-kernels li:hover:after {
+       content: "X";
+       position: absolute;
+       right: 10px;
+     }
+     
+     ul.applied-kernels li:hover {
+       
+       background-color: crimson;
+       color: white;
+     }
+
+     ul {
+       padding: 0;
+     }
+
+    </style>
+  </head>
+  <body>
+    
+    <canvas id="c" width="512" height="512"></canvas>
+
+    <script id="2d-vertex-shader" type="x-shader/x-vertex">
+     attribute vec2 a_position;
+     uniform float yFlip;
+      
+     void main() {
+       gl_Position = vec4(a_position.st * vec2(1, yFlip), 0, 1);
+     }
+    </script>
+
+    
+    <script id="2d-fragment-shader" type="x-shader/x-fragment">
+     precision highp float;
+     uniform float canvasPixels;
+     uniform sampler2D uSampler;
+     uniform float kernel[9];
+
+     vec3 rgb2hsv(vec3 c)
+     {
+       vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+       vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+       vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+       float d = q.x - min(q.w, q.y);
+       float e = 1.0e-10;
+       return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+     }
+
+     vec3 hsv2rgb(vec3 c)
+     {
+       vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+       vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+       return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+     }
+
+     vec3 get_off(int off_x, int off_y) {
+       return texture2D(uSampler, vec2(gl_FragCoord.xy - vec2(off_x, off_y)) / canvasPixels).xyz;
+     }
+
+     vec3 get_hsv(int off_x, int off_y) {
+       return hsv2rgb(get_off(off_x, off_y));
+       //return get_off(off_x, off_y);
+     }
+     
+     void main() {
+       vec4 result = vec4(get_hsv(-1, -1) * kernel[0]
+                        + get_hsv(0, -1) * kernel[1]
+                        + get_hsv(1, -1) * kernel[2]
+                        + get_hsv(-1, 0) * kernel[3]
+                        + get_hsv(0, 0) * kernel[4]
+                        + get_hsv(1, 0) * kernel[5]
+                        + get_hsv(-1, 1) * kernel[6]
+                        + get_hsv(0, 1) * kernel[7]
+                        + get_hsv(1, 1) * kernel[8], 1);
+       //gl_FragColor = result;
+       gl_FragColor = vec4(rgb2hsv(result.xyz), 1);
+       
+     }
+    </script>
+  </body>
+  <script src="dist/app.js"></script>
+  <script>
+   startApp();
+  </script>
+</html>
