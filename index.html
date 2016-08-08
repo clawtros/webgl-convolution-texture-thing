@@ -1,69 +1,9 @@
 <!doctype html>
 <html>
   <head>
-    <title></title>
+    <title>Background Generator?</title>
     <meta charset="utf-8" />
-    <style>
-     body {
-       font-family: monospace;
-       margin: 0;
-       display: flex;
-       height: 100vh;
-       background-size: 50vmin;
-     }
-     canvas {
-       margin: auto;
-       border: 2px solid white;
-     }
-
-     [role="menu"] {
-       padding: 20px;
-       background-color: white;
-       position: absolute;
-       right: 0;
-       top: 0;
-     }
-     .kernel {
-       transition: background-color 0.25s;
-       cursor: pointer;
-       padding: 10px;
-       position: relative;
-     }
-     .kernel:hover {
-       background-color: rgb(241, 241, 241);
-     }
-     .kernel:hover:after {
-       content: "+";
-       position: absolute;
-       right: 10px;
-     }
-     .kernel-element {
-       margin: 0 1em 1em 0;
-     }
-     ul.applied-kernels li {
-       list-style-type: none;
-       padding: 10px;
-       position: relative;
-       cursor: pointer;
-     }
-
-     ul.applied-kernels li:hover:after {
-       content: "X";
-       position: absolute;
-       right: 10px;
-     }
-     
-     ul.applied-kernels li:hover {
-       
-       background-color: crimson;
-       color: white;
-     }
-
-     ul {
-       padding: 0;
-     }
-
-    </style>
+    <link rel="stylesheet" href="dist/style.css">
   </head>
   <body>
     
