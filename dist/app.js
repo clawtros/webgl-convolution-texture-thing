@@ -1997,86 +1997,12 @@ module.exports = [
 'oncontextmenu', 'onfocusin', 'onfocusout'];
 },{}],"/Users/adam/projects/backgrounds/src/app.js":[function(require,module,exports){
 var presets = require('./presets');
+var kernels = require('./kernels');
+
 var Generator = require("./generator");
 var choo = require("choo");
-
+var createGeneratorModel = require("./models/texture_generator");
 var app = choo();
-
-var createGeneratorModel = function (textureGenerator) {
-    return {
-        state: {
-            isTiled: true,
-            currentPreset: "coral",
-            kernelsToApply: presets["coral"],
-            isRunning: true
-        },
-        subscriptions: [function (send, done) {
-            var animate = function () {
-                requestAnimationFrame(animate);
-                send("update", undefined, done);
-                send("render", undefined, done);
-            };
-            animate();
-            done();
-        }],
-        effects: {
-            update: function (data, state, send, done) {
-                if (state.isRunning) {
-                    for (var kernelToApply of state.kernelsToApply) {
-                        var { _, kernel } = kernelToApply;
-                        textureGenerator.drawWithKernel(kernel);
-                    }
-                }
-                if (state.isTiled && state.isRunning) {
-                    textureGenerator.hide();
-                } else {
-                    textureGenerator.show();
-                }
-                done();
-            },
-            reset: function (data, state, send, done) {
-                textureGenerator.reset();
-                done();
-            },
-            render: function (data, state, send, done) {
-                textureGenerator.render();
-                if (state.isTiled) {
-                    var body = document.getElementsByTagName("body")[0];
-                    body.setAttribute("style", "background-image: url(" + textureGenerator.canvas.toDataURL() + ")");
-                }
-                done();
-            }
-        },
-        reducers: {
-            setTiled: function (data) {
-                return {
-                    isTiled: data
-                };
-            },
-            setRunning: function (data) {
-                return {
-                    isRunning: data
-                };
-            },
-            removeKernel: function (index, state) {
-                return {
-                    kernelsToApply: state.kernelsToApply.slice(0, index).concat(state.kernelsToApply.slice(index + 1))
-                };
-            },
-            addKernel: function (kernel, state) {
-                return {
-                    kernelsToApply: state.kernelsToApply.concat([kernel])
-                };
-            },
-            setPreset: function (preset) {
-                return {
-                    currentPreset: preset,
-                    kernelsToApply: presets[preset]
-                };
-            }
-        }
-    };
-};
 
 app.router("/", function (route) {
     return [route('/', require('./views/main'), [route('/about', require('./views/about'))])];
@@ -2087,12 +2013,12 @@ window.startApp = function () {
         canvasId: "c",
         resolution: 256
     });
-    app.model(createGeneratorModel(texGen));
+    app.model(createGeneratorModel(texGen, presets, kernels));
 
     var tree = app.start();
     document.body.appendChild(tree);
 };
-},{"./generator":"/Users/adam/projects/backgrounds/src/generator.js","./presets":"/Users/adam/projects/backgrounds/src/presets.js","./views/about":"/Users/adam/projects/backgrounds/src/views/about.js","./views/main":"/Users/adam/projects/backgrounds/src/views/main.js","choo":"/Users/adam/projects/backgrounds/node_modules/choo/index.js"}],"/Users/adam/projects/backgrounds/src/generator.js":[function(require,module,exports){
+},{"./generator":"/Users/adam/projects/backgrounds/src/generator.js","./kernels":"/Users/adam/projects/backgrounds/src/kernels.js","./models/texture_generator":"/Users/adam/projects/backgrounds/src/models/texture_generator.js","./presets":"/Users/adam/projects/backgrounds/src/presets.js","./views/about":"/Users/adam/projects/backgrounds/src/views/about.js","./views/main":"/Users/adam/projects/backgrounds/src/views/main.js","choo":"/Users/adam/projects/backgrounds/node_modules/choo/index.js"}],"/Users/adam/projects/backgrounds/src/generator.js":[function(require,module,exports){
 var GLUtils = {
   // GL -> ProgramType -> DOM ID -> Shader
   compileShader: function (gl, programType, domId) {
@@ -2281,6 +2207,84 @@ module.exports = {
   gradientH: [1, 0, -1, 1, 0, -1, 1, 0, -1]
 
 };
+},{}],"/Users/adam/projects/backgrounds/src/models/texture_generator.js":[function(require,module,exports){
+module.exports = function (textureGenerator, presets, kernels) {
+  return {
+    state: {
+      isTiled: true,
+      currentPreset: "coral",
+      kernelsToApply: presets["coral"],
+      presets: presets,
+      kernels: kernels,
+      isRunning: true
+    },
+    subscriptions: [function (send, done) {
+      var animate = function () {
+        requestAnimationFrame(animate);
+        send("update", undefined, done);
+        send("render", undefined, done);
+      };
+      animate();
+      done();
+    }],
+    effects: {
+      update: function (data, state, send, done) {
+        if (state.isRunning) {
+          for (var kernelToApply of state.kernelsToApply) {
+            var { _, kernel } = kernelToApply;
+            textureGenerator.drawWithKernel(kernel);
+          }
+        }
+        if (state.isTiled && state.isRunning) {
+          textureGenerator.hide();
+        } else {
+          textureGenerator.show();
+        }
+        done();
+      },
+      reset: function (data, state, send, done) {
+        textureGenerator.reset();
+        done();
+      },
+      render: function (data, state, send, done) {
+        textureGenerator.render();
+        if (state.isTiled) {
+          var body = document.getElementsByTagName("body")[0];
+          body.setAttribute("style", "background-image: url(" + textureGenerator.canvas.toDataURL() + ")");
+        }
+        done();
+      }
+    },
+    reducers: {
+      setTiled: function (data) {
+        return {
+          isTiled: data
+        };
+      },
+      setRunning: function (data) {
+        return {
+          isRunning: data
+        };
+      },
+      removeKernel: function (index, state) {
+        return {
+          kernelsToApply: state.kernelsToApply.slice(0, index).concat(state.kernelsToApply.slice(index + 1))
+        };
+      },
+      addKernel: function (kernel, state) {
+        return {
+          kernelsToApply: state.kernelsToApply.concat([kernel])
+        };
+      },
+      setPreset: function (preset) {
+        return {
+          currentPreset: preset,
+          kernelsToApply: presets[preset]
+        };
+      }
+    }
+  };
+};
 },{}],"/Users/adam/projects/backgrounds/src/presets.js":[function(require,module,exports){
 var kernels = require("./kernels");
 var getKernel = function (kernelName) {
@@ -2321,9 +2325,6 @@ var _templateObject = _taggedTemplateLiteral(["\n   <div class=\"kernel\" onclic
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var kernels = require("../kernels");
-var presets = require('../presets');
-
 var html = require("choo/html");
 
 var kernelElement = function (name, kernel, onclick) {
@@ -2333,15 +2334,15 @@ var kernelElement = function (name, kernel, onclick) {
 module.exports = function (state, prev, send) {
   var onKernelClick = function (kernelName) {
     return function () {
-      return send("addKernel", { "name": kernelName, "kernel": kernels[kernelName] });
+      return send("addKernel", { "name": kernelName, "kernel": state.kernels[kernelName] });
     };
   };
   return html(_templateObject2, function (e) {
     return send("setPreset", e.target.value);
-  }, Object.keys(presets).map(function (preset) {
+  }, Object.keys(state.presets).map(function (preset) {
     return html(_templateObject3, preset === state.currentPreset, preset, preset);
-  }), Object.keys(kernels).map(function (kernelName) {
-    return kernelElement(kernelName, kernels[kernelName], onKernelClick(kernelName));
+  }), Object.keys(state.kernels).map(function (kernelName) {
+    return kernelElement(kernelName, state.kernels[kernelName], onKernelClick(kernelName));
   }), state.kernelsToApply.map(function (kernel, index) {
     return html(_templateObject4, function () {
       return send("removeKernel", index);
@@ -2352,7 +2353,7 @@ module.exports = function (state, prev, send) {
     return send("setRunning", !state.isRunning);
   }, state.isRunning ? "pause / snapshot" : "continue");
 };
-},{"../kernels":"/Users/adam/projects/backgrounds/src/kernels.js","../presets":"/Users/adam/projects/backgrounds/src/presets.js","choo/html":"/Users/adam/projects/backgrounds/node_modules/choo/html.js"}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js":[function(require,module,exports){
+},{"choo/html":"/Users/adam/projects/backgrounds/node_modules/choo/html.js"}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js":[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
