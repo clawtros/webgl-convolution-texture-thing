@@ -1,51 +1,8 @@
-const kernels = require("./kernels");
 const presets = require('./presets');
 const Generator = require("./generator");
-
 const choo = require("choo");
-const html = require("choo/html");
 
 const app = choo();
-
-
-const kernelView = (name, kernel, onclick) => {  
-    return html`
-   <div class="kernel" onclick=${onclick}>
-     <strong>${name}</strong>
-   </div>
-`;
-};
-
-
-const aboutView = (state, prev, send) {
-    
-}
-
-
-const mainView = (state, prev, send) => {
-    const onKernelClick = function(kernelName) {
-        return () => send("addKernel", {"name": kernelName, "kernel": kernels[kernelName]});
-    };
-    return html`<div role="menu">
-<h3>Presets</h3>
-<select onchange=${(e) => send("setPreset", e.target.value)}>
-${Object.keys(presets).map((preset) => html`<option selected=${preset === state.currentPreset} value=${preset}>${preset}</option>`)}
-</select>
-<h3>Available Kernels</h3>
-  <ul>
-    ${Object.keys(kernels).map(
-      (kernelName) => kernelView(kernelName, kernels[kernelName], onKernelClick(kernelName)))}
-  </ul>
-  <h3>Applied Kernels</h3>
-  <ul class="applied-kernels">
-   ${state.kernelsToApply.map((kernel, index) => html`
-        <li onclick=${()=>send("removeKernel", index)}>${kernel.name}</li>
-        `)}
-  </ul>
-  <button onclick=${() => send("reset")}>reset to noise</button>
-  <button onclick=${() => send("setRunning", !state.isRunning)}>${state.isRunning ? "pause" : "continue"}</button>
-</div>`;
-};
 
 const createGeneratorModel = function(textureGenerator) {
     return {
@@ -95,37 +52,43 @@ const createGeneratorModel = function(textureGenerator) {
             }
         },
         reducers: {
-            setTiled: (data) => {
-                return {isTiled: data};
-            },
-            setRunning: (data) => {
-                return {isRunning: data};
-            },
-            removeKernel: function(index, state) {
-                return {
-                    kernelsToApply: state.kernelsToApply.slice(0, index).concat(state.kernelsToApply.slice(index + 1))
-                };
-            },
-            addKernel: function(kernel, state) {
-                return {kernelsToApply: state.kernelsToApply.concat([kernel])};
-            },
-            setPreset: function(preset)  {
-                return {currentPreset: preset, kernelsToApply: presets[preset]};
-            }
+            setTiled: (data) => ({
+                isTiled: data
+            }),
+            setRunning: (data) => ({
+                isRunning: data
+            }),
+            removeKernel: (index, state) => ({
+                kernelsToApply: state.kernelsToApply.slice(0, index)
+                    .concat(state.kernelsToApply.slice(index + 1))
+            }),
+            addKernel: (kernel, state) => ({
+                kernelsToApply: state.kernelsToApply.concat([kernel])
+            }),
+            setPreset: (preset) => ({
+                currentPreset: preset,
+                kernelsToApply: presets[preset]
+            })
         }
     };
 };
 
-app.router((route) => [
-    route('/', mainView)
-]);
+app.router("/",
+           (route) => [
+               
+               route('/', require('./views/main'), [
+                   route('/about', require('./views/about')),
+               ])
+           ]);
+
 
 window.startApp = () => {
-    var texGen = Generator({
-        canvasId: "c",
-        resolution: 256
-    });
-    app.model(createGeneratorModel(texGen));
-    const tree = app.start();
-    document.body.appendChild(tree);
+  const texGen = Generator({
+    canvasId: "c",
+    resolution: 256
+  });
+  app.model(createGeneratorModel(texGen));  
+
+  const tree = app.start();
+  document.body.appendChild(tree);
 };
