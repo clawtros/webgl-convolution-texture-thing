@@ -31,8 +31,8 @@ module.exports = (state, prev, send) => {
        <li onclick=${()=>send("removeKernel", index)}>${kernel.name}</li>
        `)}
      </ul>
-     <button onclick=${() => send("reset")}>reset to noise</button>
-     <button onclick=${() => send("setRunning", !state.isRunning)}>${state.isRunning ? "pause / snapshot" : "continue"}</button>
+     <button onclick=${_=>send("reset")}>reset to noise</button>
+     <button onclick=${_=>send("setRunning", !state.isRunning)}>${state.isRunning ? "pause / snapshot" : "continue"}</button>
    </div>
 `;
 };

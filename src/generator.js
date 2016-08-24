@@ -92,7 +92,8 @@ function TextureGenerator(options) {
   var gl = canvas.getContext('experimental-webgl'),
       buffer = gl.createBuffer(),
       convolveShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-fragment-shader'),
-      vertexShader,
+      vertexShader = GLUtils.compileShader(gl, gl.VERTEX_SHADER, '2d-vertex-shader'),
+      program = GLUtils.makeProgram(gl, vertexShader, convolveShader),
       positionLocation,
       resolutionLocation,
       currentFbo = 0,
@@ -144,9 +145,6 @@ function TextureGenerator(options) {
                       1.0,  1.0]),
     gl.STATIC_DRAW
   );
-
-  vertexShader = ;
-  program = GLUtils.makeProgram(gl, vertexShader, convolveShader);
 
   GLUtils.linkProgram(gl, program);
   positionLocation = gl.getAttribLocation(program, "a_position");
