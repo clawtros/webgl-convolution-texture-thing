@@ -66,20 +66,6 @@ function randomCanvas(size) {
 
 
 function TextureGenerator(options) {
-  function setFramebuffer(fbo, width, height) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-    gl.uniform1f(resolutionLocation, canvas.width);
-    gl.viewport(0, 0, width, height);
-  }
-
-  function drawWithKernel(filter) {
-    setFramebuffer(framebuffers[currentFbo], canvas.width, canvas.height);
-    gl.uniform1fv(kernelLocation, filter);
-    gl.uniform1f(yFlipLocation, 1);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
-    currentFbo = (currentFbo + 1) % 2;
-  }
 
   var options = options || {},
       canvas = document.getElementById(options.canvasId || 'c'),
@@ -96,38 +82,23 @@ function TextureGenerator(options) {
       program = GLUtils.makeProgram(gl, vertexShader, convolveShader),
       positionLocation,
       resolutionLocation,
+      kernelLocation,
+      yFlipLocation,
       currentFbo = 0,
       originalImageTexture = createAndSetupTexture(gl),
       textures = [],
       framebuffers = [];
 
-  function reset() {
-    var noiseCanvas = randomCanvas(resolution),
-        image = document.createElement("img");
-
-    image.width = resolution;
-    image.height = resolution;
-    image.src = noiseCanvas.toDataURL();
-    image.style.display = "none";
-    
-    document.body.appendChild(image);
-    
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
-    
-  }
   
   for (var ii = 0; ii < 2; ++ii) {
     var texture = createAndSetupTexture(gl),
         fbo = gl.createFramebuffer();
-    
     textures.push(texture);
     gl.texImage2D(
       gl.TEXTURE_2D, 0, gl.RGBA, resolution, resolution, 0,
       gl.RGBA, gl.UNSIGNED_BYTE, null);
-
     framebuffers.push(fbo);
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
   }
 
@@ -158,6 +129,36 @@ function TextureGenerator(options) {
   gl.uniform1f(resolutionLocation, parseFloat(resolution));
 
   reset();  
+
+  function setFramebuffer(fbo, width, height) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.uniform1f(resolutionLocation, canvas.width);
+    gl.viewport(0, 0, width, height);
+  }
+
+  function drawWithKernel(filter) {
+    setFramebuffer(framebuffers[currentFbo], canvas.width, canvas.height);
+    gl.uniform1fv(kernelLocation, filter);
+    gl.uniform1f(yFlipLocation, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
+    currentFbo = (currentFbo + 1) % 2;
+  }
+
+  function reset() {
+    var noiseCanvas = randomCanvas(resolution),
+        image = document.createElement("img");
+
+    image.width = resolution;
+    image.height = resolution;
+    image.src = noiseCanvas.toDataURL();
+    image.style.display = "none";
+    
+    document.body.appendChild(image);
+    
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+    
+  }
   return {
     isRunning: isRunning,
     reset: reset,

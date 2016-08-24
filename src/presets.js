@@ -30,7 +30,7 @@ module.exports = {
   ].map(getKernel),
 
   space_invaders: [
-    "normal",
+    "id",
     "smooth",
     "gradientV",
     "smooth",

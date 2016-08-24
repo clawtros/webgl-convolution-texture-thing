@@ -2084,20 +2084,6 @@ function randomCanvas(size) {
 }
 
 function TextureGenerator(options) {
-  function setFramebuffer(fbo, width, height) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-    gl.uniform1f(resolutionLocation, canvas.width);
-    gl.viewport(0, 0, width, height);
-  }
-
-  function drawWithKernel(filter) {
-    setFramebuffer(framebuffers[currentFbo], canvas.width, canvas.height);
-    gl.uniform1fv(kernelLocation, filter);
-    gl.uniform1f(yFlipLocation, 1);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
-    currentFbo = (currentFbo + 1) % 2;
-  }
 
   var options = options || {},
       canvas = document.getElementById(options.canvasId || 'c'),
@@ -2114,35 +2100,20 @@ function TextureGenerator(options) {
       program = GLUtils.makeProgram(gl, vertexShader, convolveShader),
       positionLocation,
       resolutionLocation,
+      kernelLocation,
+      yFlipLocation,
       currentFbo = 0,
       originalImageTexture = createAndSetupTexture(gl),
       textures = [],
       framebuffers = [];
 
-  function reset() {
-    var noiseCanvas = randomCanvas(resolution),
-        image = document.createElement("img");
-
-    image.width = resolution;
-    image.height = resolution;
-    image.src = noiseCanvas.toDataURL();
-    image.style.display = "none";
-
-    document.body.appendChild(image);
-
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-  }
-
   for (var ii = 0; ii < 2; ++ii) {
     var texture = createAndSetupTexture(gl),
         fbo = gl.createFramebuffer();
-
     textures.push(texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, resolution, resolution, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-
     framebuffers.push(fbo);
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
   }
 
@@ -2164,6 +2135,35 @@ function TextureGenerator(options) {
   gl.uniform1f(resolutionLocation, parseFloat(resolution));
 
   reset();
+
+  function setFramebuffer(fbo, width, height) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.uniform1f(resolutionLocation, canvas.width);
+    gl.viewport(0, 0, width, height);
+  }
+
+  function drawWithKernel(filter) {
+    setFramebuffer(framebuffers[currentFbo], canvas.width, canvas.height);
+    gl.uniform1fv(kernelLocation, filter);
+    gl.uniform1f(yFlipLocation, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
+    currentFbo = (currentFbo + 1) % 2;
+  }
+
+  function reset() {
+    var noiseCanvas = randomCanvas(resolution),
+        image = document.createElement("img");
+
+    image.width = resolution;
+    image.height = resolution;
+    image.src = noiseCanvas.toDataURL();
+    image.style.display = "none";
+
+    document.body.appendChild(image);
+
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+  }
   return {
     isRunning: isRunning,
     reset: reset,
@@ -2189,7 +2189,7 @@ function TextureGenerator(options) {
 module.exports = TextureGenerator;
 },{}],"/Users/adam/projects/backgrounds/src/kernels.js":[function(require,module,exports){
 module.exports = {
-  normal: [0, 0, 0, 0, 1, 0, 0, 0, 0],
+  id: [0, 0, 0, 0, 1, 0, 0, 0, 0],
   edge2: [1, 0, -1, 0, 0, 0, -1, 0, 1],
   edge1: [0, 1, 0, 1, -4, 1, 0, 1, 0],
   edge: [-1, -1, -1, -1, 8, -1, -1, -1, -1],
@@ -2200,8 +2200,9 @@ module.exports = {
   smooth: [1 / 9., 1 / 9., 1 / 9., 1 / 9., 1 / 9., 1 / 9., 1 / 9., 1 / 9., 1 / 9.],
   emboss: [-2, -1, 0, -1, 1, 1, 0, 1, 2],
   gradientV: [1, 1, 1, 0, 0, 0, -1, -1, -1],
-  gradientH: [1, 0, -1, 1, 0, -1, 1, 0, -1]
-
+  gradientH: [1, 0, -1, 1, 0, -1, 1, 0, -1],
+  //tech: [-1.5709743933096414, 2.0166855311507104, -2.2297653013318097, 1.716445518122222, 0.6069321364556035, 2.1672824073403074, 1.6201619117709982, -1.6588807810661472, -1.6678870291322432],
+  birds: [-0.02758361280615104, 0.006531460495804711, 0.05657656821795795, 0.007092575394956019, 0.9436784862956114, -0.021026887803138463, -0.018781465598406242, 0.030342911698424825, 0.023169964104940828]
 };
 },{}],"/Users/adam/projects/backgrounds/src/models/texture_generator.js":[function(require,module,exports){
 module.exports = function (textureGenerator, presets, kernels) {
@@ -2297,7 +2298,7 @@ module.exports = {
   scritchy: ["emboss", "smooth", "gaussian", "edge"].map(getKernel),
   brownian: ["gaussian", "smooth", "edge", "gaussian"].map(getKernel),
 
-  space_invaders: ["normal", "smooth", "gradientV", "smooth", "smooth", "smooth", "smooth"].map(getKernel),
+  space_invaders: ["id", "smooth", "gradientV", "smooth", "smooth", "smooth", "smooth"].map(getKernel),
 
   worm_matrix: ["gradientH", "gaussian", "gaussian", "gaussian", "gaussian", "gaussian", "edge", "smooth"].map(getKernel),
 
