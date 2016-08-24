@@ -91,7 +91,7 @@ function TextureGenerator(options) {
 
   var gl = canvas.getContext('experimental-webgl'),
       buffer = gl.createBuffer(),
-      convolveShader,
+      convolveShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-fragment-shader'),
       vertexShader,
       positionLocation,
       resolutionLocation,
@@ -114,23 +114,20 @@ function TextureGenerator(options) {
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
     
   }
-
-  reset();
   
   for (var ii = 0; ii < 2; ++ii) {
-    var texture = createAndSetupTexture(gl);
+    var texture = createAndSetupTexture(gl),
+        fbo = gl.createFramebuffer();
+    
     textures.push(texture);
-
     gl.texImage2D(
       gl.TEXTURE_2D, 0, gl.RGBA, resolution, resolution, 0,
       gl.RGBA, gl.UNSIGNED_BYTE, null);
 
-    var fbo = gl.createFramebuffer();
     framebuffers.push(fbo);
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
 
-    gl.framebufferTexture2D(
-      gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
   }
 
   gl.activeTexture(gl.TEXTURE0);
@@ -148,8 +145,7 @@ function TextureGenerator(options) {
     gl.STATIC_DRAW
   );
 
-  convolveShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-fragment-shader');
-  vertexShader = GLUtils.compileShader(gl, gl.VERTEX_SHADER, '2d-vertex-shader');
+  vertexShader = ;
   program = GLUtils.makeProgram(gl, vertexShader, convolveShader);
 
   GLUtils.linkProgram(gl, program);
@@ -161,16 +157,17 @@ function TextureGenerator(options) {
   gl.enableVertexAttribArray(positionLocation);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
   gl.uniform1i(gl.getUniformLocation(program, "uSampler"), 0);
-
   gl.uniform1f(resolutionLocation, parseFloat(resolution));
 
-  
+  reset();  
   return {
     isRunning: isRunning,
     reset: reset,
+    
     hide: function() {
       canvas.style.visibility = "hidden";
     },
+    
     show: function() {
       canvas.style.visibility = "visible";
     },
