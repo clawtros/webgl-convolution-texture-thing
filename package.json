@@ -4,7 +4,8 @@
   "description": "Make tileable backgrounds with webgl",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify src/app.js -g es2020 -v -o dist/app.js"
   },
   "author": "",
   "license": "ISC",
