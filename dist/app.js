@@ -2151,8 +2151,7 @@ function TextureGenerator(options) {
   }
 
   function reset() {
-    var noiseCanvas = randomCanvas(resolution);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, noiseCanvas.getContext('2d').getImageData(0, 0, resolution, resolution));
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, randomCanvas(resolution).getContext('2d').getImageData(0, 0, resolution, resolution));
   }
   return {
     isRunning: isRunning,
