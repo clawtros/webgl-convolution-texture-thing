@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/adam/projects/backgrounds/node_modules/barracks/apply-hook.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = applyHook;
 
 // apply arguments onto an array of functions, useful for hooks
@@ -8,7 +8,7 @@ function applyHook(arr, arg1, arg2, arg3, arg4, arg5) {
     fn(arg1, arg2, arg3, arg4, arg5);
   });
 }
-},{}],"/Users/adam/projects/backgrounds/node_modules/barracks/index.js":[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 var mutate = require('xtend/mutable');
 var assert = require('assert');
 var xtend = require('xtend');
@@ -252,7 +252,7 @@ function wrapOnError(onError) {
     if (err) onError(err);
   };
 }
-},{"./apply-hook":"/Users/adam/projects/backgrounds/node_modules/barracks/apply-hook.js","assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","xtend":"/Users/adam/projects/backgrounds/node_modules/xtend/immutable.js","xtend/mutable":"/Users/adam/projects/backgrounds/node_modules/xtend/mutable.js"}],"/Users/adam/projects/backgrounds/node_modules/bel/index.js":[function(require,module,exports){
+},{"./apply-hook":1,"assert":33,"xtend":22,"xtend/mutable":23}],3:[function(require,module,exports){
 var document = require('global/document');
 var hyperx = require('hyperx');
 var onload = require('on-load');
@@ -373,9 +373,9 @@ function belCreateElement(tag, props, children) {
 
 module.exports = hyperx(belCreateElement);
 module.exports.createElement = belCreateElement;
-},{"global/document":"/Users/adam/projects/backgrounds/node_modules/global/document.js","hyperx":"/Users/adam/projects/backgrounds/node_modules/hyperx/index.js","on-load":"/Users/adam/projects/backgrounds/node_modules/on-load/index.js"}],"/Users/adam/projects/backgrounds/node_modules/choo/html.js":[function(require,module,exports){
+},{"global/document":7,"hyperx":11,"on-load":14}],4:[function(require,module,exports){
 module.exports = require('yo-yo');
-},{"yo-yo":"/Users/adam/projects/backgrounds/node_modules/yo-yo/index.js"}],"/Users/adam/projects/backgrounds/node_modules/choo/index.js":[function(require,module,exports){
+},{"yo-yo":24}],5:[function(require,module,exports){
 var history = require('sheet-router/history');
 var sheetRouter = require('sheet-router');
 var document = require('global/document');
@@ -562,7 +562,7 @@ function appInit(opts) {
     };
   }
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","barracks":"/Users/adam/projects/backgrounds/node_modules/barracks/index.js","document-ready":"/Users/adam/projects/backgrounds/node_modules/document-ready/index.js","global/document":"/Users/adam/projects/backgrounds/node_modules/global/document.js","hash-match":"/Users/adam/projects/backgrounds/node_modules/hash-match/index.js","nanoraf":"/Users/adam/projects/backgrounds/node_modules/nanoraf/index.js","sheet-router":"/Users/adam/projects/backgrounds/node_modules/sheet-router/index.js","sheet-router/hash":"/Users/adam/projects/backgrounds/node_modules/sheet-router/hash.js","sheet-router/history":"/Users/adam/projects/backgrounds/node_modules/sheet-router/history.js","sheet-router/href":"/Users/adam/projects/backgrounds/node_modules/sheet-router/href.js","xtend":"/Users/adam/projects/backgrounds/node_modules/xtend/immutable.js","yo-yo":"/Users/adam/projects/backgrounds/node_modules/yo-yo/index.js"}],"/Users/adam/projects/backgrounds/node_modules/document-ready/index.js":[function(require,module,exports){
+},{"assert":33,"barracks":2,"document-ready":6,"global/document":7,"hash-match":9,"nanoraf":13,"sheet-router":19,"sheet-router/hash":16,"sheet-router/history":17,"sheet-router/href":18,"xtend":22,"yo-yo":24}],6:[function(require,module,exports){
 'use strict';
 
 var document = require('global/document');
@@ -580,7 +580,7 @@ function ready(callback) {
 }
 
 function noop() {}
-},{"global/document":"/Users/adam/projects/backgrounds/node_modules/global/document.js"}],"/Users/adam/projects/backgrounds/node_modules/global/document.js":[function(require,module,exports){
+},{"global/document":7}],7:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {};
 var minDoc = require('min-document');
@@ -597,7 +597,7 @@ if (typeof document !== 'undefined') {
     module.exports = doccy;
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/browser-resolve/empty.js"}],"/Users/adam/projects/backgrounds/node_modules/global/window.js":[function(require,module,exports){
+},{"min-document":34}],8:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -609,7 +609,7 @@ if (typeof window !== "undefined") {
     module.exports = {};
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],"/Users/adam/projects/backgrounds/node_modules/hash-match/index.js":[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function hashMatch(hash, prefix) {
   var pre = prefix || '/';
   if (hash.length === 0) return pre;
@@ -618,7 +618,7 @@ module.exports = function hashMatch(hash, prefix) {
   if (hash.indexOf('/') != 0) hash = '/' + hash;
   if (pre == '/') return hash;else return hash.replace(pre, '');
 };
-},{}],"/Users/adam/projects/backgrounds/node_modules/hyperscript-attribute-to-property/index.js":[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = attributeToProperty;
 
 var transform = {
@@ -638,7 +638,7 @@ function attributeToProperty(h) {
     return h(tagName, attrs, children);
   };
 }
-},{}],"/Users/adam/projects/backgrounds/node_modules/hyperx/index.js":[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var attrToProp = require('hyperscript-attribute-to-property');
 
 var VAR = 0,
@@ -886,7 +886,7 @@ var closeRE = RegExp('^(' + ['area', 'base', 'basefont', 'bgsound', 'br', 'col',
 function selfClosing(tag) {
   return closeRE.test(tag);
 }
-},{"hyperscript-attribute-to-property":"/Users/adam/projects/backgrounds/node_modules/hyperscript-attribute-to-property/index.js"}],"/Users/adam/projects/backgrounds/node_modules/morphdom/lib/index.js":[function(require,module,exports){
+},{"hyperscript-attribute-to-property":10}],12:[function(require,module,exports){
 // Create a range object for efficently rendering strings to elements.
 var range;
 
@@ -1461,7 +1461,7 @@ function morphdom(fromNode, toNode, options) {
 }
 
 module.exports = morphdom;
-},{}],"/Users/adam/projects/backgrounds/node_modules/nanoraf/index.js":[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var window = require('global/window');
 var assert = require('assert');
 
@@ -1508,7 +1508,7 @@ function nanoraf(render, raf) {
     currentState = state;
   };
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","global/window":"/Users/adam/projects/backgrounds/node_modules/global/window.js"}],"/Users/adam/projects/backgrounds/node_modules/on-load/index.js":[function(require,module,exports){
+},{"assert":33,"global/window":8}],14:[function(require,module,exports){
 /* global MutationObserver */
 var document = require('global/document');
 var window = require('global/window');
@@ -1596,7 +1596,7 @@ function eachMutation(nodes, fn) {
     }
   }
 }
-},{"global/document":"/Users/adam/projects/backgrounds/node_modules/global/document.js","global/window":"/Users/adam/projects/backgrounds/node_modules/global/window.js"}],"/Users/adam/projects/backgrounds/node_modules/pathname-match/index.js":[function(require,module,exports){
+},{"global/document":7,"global/window":8}],15:[function(require,module,exports){
 var assert = require('assert');
 
 module.exports = match;
@@ -1611,7 +1611,7 @@ function match(route) {
 
   return route.trim().replace(/[\?|#].*$/, '').replace(/^(?:https?\:)\/\//, '').replace(/^(?:[\w+(?:-\w+)+.])+(?:[\:0-9]{4,5})?/, '').replace(/\/$/, '');
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js"}],"/Users/adam/projects/backgrounds/node_modules/sheet-router/hash.js":[function(require,module,exports){
+},{"assert":33}],16:[function(require,module,exports){
 var window = require('global/window');
 var assert = require('assert');
 
@@ -1626,7 +1626,7 @@ function hash(cb) {
     cb(window.location.hash);
   };
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","global/window":"/Users/adam/projects/backgrounds/node_modules/global/window.js"}],"/Users/adam/projects/backgrounds/node_modules/sheet-router/history.js":[function(require,module,exports){
+},{"assert":33,"global/window":8}],17:[function(require,module,exports){
 var document = require('global/document');
 var window = require('global/window');
 var assert = require('assert');
@@ -1642,7 +1642,7 @@ function history(cb) {
     cb(document.location.href);
   };
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","global/document":"/Users/adam/projects/backgrounds/node_modules/global/document.js","global/window":"/Users/adam/projects/backgrounds/node_modules/global/window.js"}],"/Users/adam/projects/backgrounds/node_modules/sheet-router/href.js":[function(require,module,exports){
+},{"assert":33,"global/document":7,"global/window":8}],18:[function(require,module,exports){
 var window = require('global/window');
 var assert = require('assert');
 
@@ -1672,7 +1672,7 @@ function href(cb) {
     window.history.pushState({}, null, href);
   };
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","global/window":"/Users/adam/projects/backgrounds/node_modules/global/window.js"}],"/Users/adam/projects/backgrounds/node_modules/sheet-router/index.js":[function(require,module,exports){
+},{"assert":33,"global/window":8}],19:[function(require,module,exports){
 var pathname = require('pathname-match');
 var wayfarer = require('wayfarer');
 var assert = require('assert');
@@ -1738,7 +1738,7 @@ function _createRoute(route, inline, child) {
   route = route.replace(/^\//, '');
   return [route, inline, child];
 }
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","pathname-match":"/Users/adam/projects/backgrounds/node_modules/pathname-match/index.js","wayfarer":"/Users/adam/projects/backgrounds/node_modules/wayfarer/index.js"}],"/Users/adam/projects/backgrounds/node_modules/wayfarer/index.js":[function(require,module,exports){
+},{"assert":33,"pathname-match":15,"wayfarer":20}],20:[function(require,module,exports){
 var assert = require('assert');
 var trie = require('./trie');
 
@@ -1798,7 +1798,7 @@ function Wayfarer(dft) {
     throw new Error("route '" + route + "' did not match");
   }
 }
-},{"./trie":"/Users/adam/projects/backgrounds/node_modules/wayfarer/trie.js","assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js"}],"/Users/adam/projects/backgrounds/node_modules/wayfarer/trie.js":[function(require,module,exports){
+},{"./trie":21,"assert":33}],21:[function(require,module,exports){
 var mutate = require('xtend/mutable');
 var assert = require('assert');
 var xtend = require('xtend');
@@ -1914,7 +1914,7 @@ Trie.prototype.mount = function (route, trie) {
     delete node.nodes[''].nodes;
   }
 };
-},{"assert":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js","xtend":"/Users/adam/projects/backgrounds/node_modules/xtend/immutable.js","xtend/mutable":"/Users/adam/projects/backgrounds/node_modules/xtend/mutable.js"}],"/Users/adam/projects/backgrounds/node_modules/xtend/immutable.js":[function(require,module,exports){
+},{"assert":33,"xtend":22,"xtend/mutable":23}],22:[function(require,module,exports){
 module.exports = extend;
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -1934,7 +1934,7 @@ function extend() {
 
     return target;
 }
-},{}],"/Users/adam/projects/backgrounds/node_modules/xtend/mutable.js":[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = extend;
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -1952,7 +1952,7 @@ function extend(target) {
 
     return target;
 }
-},{}],"/Users/adam/projects/backgrounds/node_modules/yo-yo/index.js":[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var bel = require('bel'); // turns template tag into DOM elements
 var morphdom = require('morphdom'); // efficiently diffs + morphs two DOM elements
 var defaultEvents = require('./update-events.js'); // default events to be copied when dom elements update
@@ -1989,13 +1989,13 @@ module.exports.update = function (fromNode, toNode, opts) {
     }
   }
 };
-},{"./update-events.js":"/Users/adam/projects/backgrounds/node_modules/yo-yo/update-events.js","bel":"/Users/adam/projects/backgrounds/node_modules/bel/index.js","morphdom":"/Users/adam/projects/backgrounds/node_modules/morphdom/lib/index.js"}],"/Users/adam/projects/backgrounds/node_modules/yo-yo/update-events.js":[function(require,module,exports){
+},{"./update-events.js":25,"bel":3,"morphdom":12}],25:[function(require,module,exports){
 module.exports = [
 // attribute events (can be set with attributes)
 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'ondragstart', 'ondrag', 'ondragenter', 'ondragleave', 'ondragover', 'ondrop', 'ondragend', 'onkeydown', 'onkeypress', 'onkeyup', 'onunload', 'onabort', 'onerror', 'onresize', 'onscroll', 'onselect', 'onchange', 'onsubmit', 'onreset', 'onfocus', 'onblur', 'oninput',
 // other common events
 'oncontextmenu', 'onfocusin', 'onfocusout'];
-},{}],"/Users/adam/projects/backgrounds/src/app.js":[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var TextureGenerator = require("./generator");
 var GeneratorModel = require("./models/texture_generator");
 
@@ -2017,7 +2017,7 @@ window.startApp = function () {
   var tree = app.start({ history: false, hash: true });
   document.body.appendChild(tree);
 };
-},{"./generator":"/Users/adam/projects/backgrounds/src/generator.js","./kernels":"/Users/adam/projects/backgrounds/src/kernels.js","./models/texture_generator":"/Users/adam/projects/backgrounds/src/models/texture_generator.js","./presets":"/Users/adam/projects/backgrounds/src/presets.js","./views/about":"/Users/adam/projects/backgrounds/src/views/about.js","./views/main":"/Users/adam/projects/backgrounds/src/views/main.js","choo":"/Users/adam/projects/backgrounds/node_modules/choo/index.js"}],"/Users/adam/projects/backgrounds/src/generator.js":[function(require,module,exports){
+},{"./generator":27,"./kernels":28,"./models/texture_generator":29,"./presets":30,"./views/about":31,"./views/main":32,"choo":5}],27:[function(require,module,exports){
 var GLUtils = {
   // GL -> ProgramType -> DOM ID -> Shader
   compileShader: function (gl, programType, domId) {
@@ -2073,7 +2073,6 @@ function randomCanvas(size) {
       data = imgdata.data;
 
   for (var i = 0; i < data.length; i += 4) {
-    var h = Math.random() * 255;
     data[i] = Math.random() * 255;
     data[i + 1] = Math.random() * 255;
     data[i + 2] = Math.random() * 255;
@@ -2152,17 +2151,8 @@ function TextureGenerator(options) {
   }
 
   function reset() {
-    var noiseCanvas = randomCanvas(resolution),
-        image = document.createElement("img");
-
-    image.width = resolution;
-    image.height = resolution;
-    image.src = noiseCanvas.toDataURL();
-    image.style.display = "none";
-
-    document.body.appendChild(image);
-
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    var noiseCanvas = randomCanvas(resolution);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, noiseCanvas.getContext('2d').getImageData(0, 0, resolution, resolution));
   }
   return {
     isRunning: isRunning,
@@ -2187,7 +2177,7 @@ function TextureGenerator(options) {
 }
 
 module.exports = TextureGenerator;
-},{}],"/Users/adam/projects/backgrounds/src/kernels.js":[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = {
   id: [0, 0, 0, 0, 1, 0, 0, 0, 0],
   edge2: [1, 0, -1, 0, 0, 0, -1, 0, 1],
@@ -2204,7 +2194,7 @@ module.exports = {
   //tech: [-1.5709743933096414, 2.0166855311507104, -2.2297653013318097, 1.716445518122222, 0.6069321364556035, 2.1672824073403074, 1.6201619117709982, -1.6588807810661472, -1.6678870291322432],
   birds: [-0.02758361280615104, 0.006531460495804711, 0.05657656821795795, 0.007092575394956019, 0.9436784862956114, -0.021026887803138463, -0.018781465598406242, 0.030342911698424825, 0.023169964104940828]
 };
-},{}],"/Users/adam/projects/backgrounds/src/models/texture_generator.js":[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function (textureGenerator, presets, kernels) {
   return {
     state: {
@@ -2282,7 +2272,7 @@ module.exports = function (textureGenerator, presets, kernels) {
     }
   };
 };
-},{}],"/Users/adam/projects/backgrounds/src/presets.js":[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var kernels = require("./kernels");
 var getKernel = function (kernelName) {
   return {
@@ -2304,7 +2294,7 @@ module.exports = {
 
   terraces: ["gaussian", "edge1", "edge2", "sharpen"].map(getKernel)
 };
-},{"./kernels":"/Users/adam/projects/backgrounds/src/kernels.js"}],"/Users/adam/projects/backgrounds/src/views/about.js":[function(require,module,exports){
+},{"./kernels":28}],31:[function(require,module,exports){
 var _templateObject = _taggedTemplateLiteral(["\n<div class=\"about\">\n  <a role=\"top-nav\" href=\"#\">Back</a>\n  <h1>About</h1>\n  <p>\n    This here thing takes a bunch of convolution kernels and continually applies them to a bitmap, mapping rgb values to hsv and back again.  It makes some pretty patterns sometimes!\n  </p>\n  <p>\n    You can click on one of the available kernels to add it to the stack of kernels that get applied each frame.\n  </p>\n  <p>\n    \"Reset to noise\" will effectively \"start over\" if your display goes black.  \"pause / snapshot\" shows you the current canvas state stops iterating and shows you the current state of the canvas so you can right click and save it as an image.\n  </p>\n  <p>\n     Since these textures are generated on a toroidal surface, they should work as tileable images for like backgrounds or something?\n  </p>\n<h1>Usage</h1>\n <p>Click on things; see what happens.</p>\n</div>"], ["\n<div class=\"about\">\n  <a role=\"top-nav\" href=\"#\">Back</a>\n  <h1>About</h1>\n  <p>\n    This here thing takes a bunch of convolution kernels and continually applies them to a bitmap, mapping rgb values to hsv and back again.  It makes some pretty patterns sometimes!\n  </p>\n  <p>\n    You can click on one of the available kernels to add it to the stack of kernels that get applied each frame.\n  </p>\n  <p>\n    \"Reset to noise\" will effectively \"start over\" if your display goes black.  \"pause / snapshot\" shows you the current canvas state stops iterating and shows you the current state of the canvas so you can right click and save it as an image.\n  </p>\n  <p>\n     Since these textures are generated on a toroidal surface, they should work as tileable images for like backgrounds or something?\n  </p>\n<h1>Usage</h1>\n <p>Click on things; see what happens.</p>\n</div>"]);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
@@ -2314,7 +2304,7 @@ var html = require("choo/html");
 module.exports = function (state, prev, send) {
   return html(_templateObject);
 };
-},{"choo/html":"/Users/adam/projects/backgrounds/node_modules/choo/html.js"}],"/Users/adam/projects/backgrounds/src/views/main.js":[function(require,module,exports){
+},{"choo/html":4}],32:[function(require,module,exports){
 var _templateObject = _taggedTemplateLiteral(['\n<div class="kernel" onclick=', '>\n  <pre class="kernel-matrix">', '</pre>\n  <strong>', '</strong>\n</div>\n'], ['\n<div class="kernel" onclick=', '>\n  <pre class="kernel-matrix">', '</pre>\n  <strong>', '</strong>\n</div>\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n   <div role="menu">\n     <a role="top-nav" href="#/about/">About</a>\n     <h3>Presets</h3>\n     <select onchange=', '>\n       ', '\n     </select>\n     <h3>Available Kernels</h3>\n     <ul>\n       ', '\n     </ul>\n     <h3>Applied Kernels</h3>\n     <ul class="applied-kernels">\n       ', '\n     </ul>\n     <button onclick=', '>reset to noise</button>\n     <button onclick=', '>', '</button>\n   </div>\n'], ['\n   <div role="menu">\n     <a role="top-nav" href="#/about/">About</a>\n     <h3>Presets</h3>\n     <select onchange=', '>\n       ', '\n     </select>\n     <h3>Available Kernels</h3>\n     <ul>\n       ', '\n     </ul>\n     <h3>Applied Kernels</h3>\n     <ul class="applied-kernels">\n       ', '\n     </ul>\n     <button onclick=', '>reset to noise</button>\n     <button onclick=', '>', '</button>\n   </div>\n']),
     _templateObject3 = _taggedTemplateLiteral(['<option selected=', ' value=', '>', '</option>'], ['<option selected=', ' value=', '>', '</option>']),
@@ -2352,7 +2342,53 @@ module.exports = function (state, prev, send) {
     return send("setRunning", !state.isRunning);
   }, state.isRunning ? "pause / snapshot" : "continue");
 };
-},{"choo/html":"/Users/adam/projects/backgrounds/node_modules/choo/html.js"}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/assert/assert.js":[function(require,module,exports){
+},{"choo/html":4}],33:[function(require,module,exports){
+(function (global){
+'use strict';
+
+// compare and isBuffer taken from https://github.com/feross/buffer/blob/680e9e5e488f22aac27599a57dc844a6315928dd/index.js
+// original notice:
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+function compare(a, b) {
+  if (a === b) {
+    return 0;
+  }
+
+  var x = a.length;
+  var y = b.length;
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i];
+      y = b[i];
+      break;
+    }
+  }
+
+  if (x < y) {
+    return -1;
+  }
+  if (y < x) {
+    return 1;
+  }
+  return 0;
+}
+function isBuffer(b) {
+  if (global.Buffer && typeof global.Buffer.isBuffer === 'function') {
+    return global.Buffer.isBuffer(b);
+  }
+  return !!(b != null && b._isBuffer);
+}
+
+// based on node assert, original notice:
+
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
@@ -2377,14 +2413,36 @@ module.exports = function (state, prev, send) {
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// when used in node, this will actually load the util module we depend on
-// versus loading the builtin util module as happens otherwise
-// this is a bug in node module loading as far as I am concerned
 var util = require('util/');
-
-var pSlice = Array.prototype.slice;
 var hasOwn = Object.prototype.hasOwnProperty;
-
+var pSlice = Array.prototype.slice;
+var functionsHaveNames = function () {
+  return function foo() {}.name === 'foo';
+}();
+function pToString(obj) {
+  return Object.prototype.toString.call(obj);
+}
+function isView(arrbuf) {
+  if (isBuffer(arrbuf)) {
+    return false;
+  }
+  if (typeof global.ArrayBuffer !== 'function') {
+    return false;
+  }
+  if (typeof ArrayBuffer.isView === 'function') {
+    return ArrayBuffer.isView(arrbuf);
+  }
+  if (!arrbuf) {
+    return false;
+  }
+  if (arrbuf instanceof DataView) {
+    return true;
+  }
+  if (arrbuf.buffer && arrbuf.buffer instanceof ArrayBuffer) {
+    return true;
+  }
+  return false;
+}
 // 1. The assert module provides functions that throw
 // AssertionError's when particular conditions are not met. The
 // assert module must conform to the following interface.
@@ -2396,6 +2454,19 @@ var assert = module.exports = ok;
 //                             actual: actual,
 //                             expected: expected })
 
+var regex = /\s*function\s+([^\(\s]*)\s*/;
+// based on https://github.com/ljharb/function.prototype.name/blob/adeeeec8bfcc6068b187d7d9fb3d5bb1d3a30899/implementation.js
+function getName(func) {
+  if (!util.isFunction(func)) {
+    return;
+  }
+  if (functionsHaveNames) {
+    return func.name;
+  }
+  var str = func.toString();
+  var match = str.match(regex);
+  return match && match[1];
+}
 assert.AssertionError = function AssertionError(options) {
   this.name = 'AssertionError';
   this.actual = options.actual;
@@ -2409,7 +2480,6 @@ assert.AssertionError = function AssertionError(options) {
     this.generatedMessage = true;
   }
   var stackStartFunction = options.stackStartFunction || fail;
-
   if (Error.captureStackTrace) {
     Error.captureStackTrace(this, stackStartFunction);
   } else {
@@ -2419,7 +2489,7 @@ assert.AssertionError = function AssertionError(options) {
       var out = err.stack;
 
       // try to strip useless frames
-      var fn_name = stackStartFunction.name;
+      var fn_name = getName(stackStartFunction);
       var idx = out.indexOf('\n' + fn_name);
       if (idx >= 0) {
         // once we have located the function frame
@@ -2436,29 +2506,23 @@ assert.AssertionError = function AssertionError(options) {
 // assert.AssertionError instanceof Error
 util.inherits(assert.AssertionError, Error);
 
-function replacer(key, value) {
-  if (util.isUndefined(value)) {
-    return '' + value;
-  }
-  if (util.isNumber(value) && !isFinite(value)) {
-    return value.toString();
-  }
-  if (util.isFunction(value) || util.isRegExp(value)) {
-    return value.toString();
-  }
-  return value;
-}
-
 function truncate(s, n) {
-  if (util.isString(s)) {
+  if (typeof s === 'string') {
     return s.length < n ? s : s.slice(0, n);
   } else {
     return s;
   }
 }
-
+function inspect(something) {
+  if (functionsHaveNames || !util.isFunction(something)) {
+    return util.inspect(something);
+  }
+  var rawname = getName(something);
+  var name = rawname ? ': ' + rawname : '';
+  return '[Function' + name + ']';
+}
 function getMessage(self) {
-  return truncate(JSON.stringify(self.actual, replacer), 128) + ' ' + self.operator + ' ' + truncate(JSON.stringify(self.expected, replacer), 128);
+  return truncate(inspect(self.actual), 128) + ' ' + self.operator + ' ' + truncate(inspect(self.expected), 128);
 }
 
 // At present only the three keys mentioned above are used and
@@ -2518,23 +2582,23 @@ assert.notEqual = function notEqual(actual, expected, message) {
 // assert.deepEqual(actual, expected, message_opt);
 
 assert.deepEqual = function deepEqual(actual, expected, message) {
-  if (!_deepEqual(actual, expected)) {
+  if (!_deepEqual(actual, expected, false)) {
     fail(actual, expected, message, 'deepEqual', assert.deepEqual);
   }
 };
 
-function _deepEqual(actual, expected) {
+assert.deepStrictEqual = function deepStrictEqual(actual, expected, message) {
+  if (!_deepEqual(actual, expected, true)) {
+    fail(actual, expected, message, 'deepStrictEqual', assert.deepStrictEqual);
+  }
+};
+
+function _deepEqual(actual, expected, strict, memos) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
     return true;
-  } else if (util.isBuffer(actual) && util.isBuffer(expected)) {
-    if (actual.length != expected.length) return false;
-
-    for (var i = 0; i < actual.length; i++) {
-      if (actual[i] !== expected[i]) return false;
-    }
-
-    return true;
+  } else if (isBuffer(actual) && isBuffer(expected)) {
+    return compare(actual, expected) === 0;
 
     // 7.2. If the expected value is a Date object, the actual value is
     // equivalent if it is also a Date object that refers to the same time.
@@ -2549,8 +2613,17 @@ function _deepEqual(actual, expected) {
 
     // 7.4. Other pairs that do not both pass typeof value == 'object',
     // equivalence is determined by ==.
-  } else if (!util.isObject(actual) && !util.isObject(expected)) {
-    return actual == expected;
+  } else if ((actual === null || typeof actual !== 'object') && (expected === null || typeof expected !== 'object')) {
+    return strict ? actual === expected : actual == expected;
+
+    // If both values are instances of typed arrays, wrap their underlying
+    // ArrayBuffers in a Buffer each to increase performance
+    // This optimization requires the arrays to have the same type as checked by
+    // Object.prototype.toString (aka pToString). Never perform binary
+    // comparisons for Float*Arrays, though, since e.g. +0 === -0 but their
+    // bit patterns are not identical.
+  } else if (isView(actual) && isView(expected) && pToString(actual) === pToString(expected) && !(actual instanceof Float32Array || actual instanceof Float64Array)) {
+    return compare(new Uint8Array(actual.buffer), new Uint8Array(expected.buffer)) === 0;
 
     // 7.5 For all other Object pairs, including Array objects, equivalence is
     // determined by having the same number of owned properties (as verified
@@ -2558,8 +2631,22 @@ function _deepEqual(actual, expected) {
     // (although not necessarily the same order), equivalent values for every
     // corresponding key, and an identical 'prototype' property. Note: this
     // accounts for both named and indexed properties on Arrays.
+  } else if (isBuffer(actual) !== isBuffer(expected)) {
+    return false;
   } else {
-    return objEquiv(actual, expected);
+    memos = memos || { actual: [], expected: [] };
+
+    var actualIndex = memos.actual.indexOf(actual);
+    if (actualIndex !== -1) {
+      if (actualIndex === memos.expected.indexOf(expected)) {
+        return true;
+      }
+    }
+
+    memos.actual.push(actual);
+    memos.expected.push(expected);
+
+    return objEquiv(actual, expected, strict, memos);
   }
 }
 
@@ -2567,41 +2654,37 @@ function isArguments(object) {
   return Object.prototype.toString.call(object) == '[object Arguments]';
 }
 
-function objEquiv(a, b) {
-  if (util.isNullOrUndefined(a) || util.isNullOrUndefined(b)) return false;
-  // an identical 'prototype' property.
-  if (a.prototype !== b.prototype) return false;
+function objEquiv(a, b, strict, actualVisitedObjects) {
+  if (a === null || a === undefined || b === null || b === undefined) return false;
   // if one is a primitive, the other must be same
-  if (util.isPrimitive(a) || util.isPrimitive(b)) {
-    return a === b;
-  }
-  var aIsArgs = isArguments(a),
-      bIsArgs = isArguments(b);
+  if (util.isPrimitive(a) || util.isPrimitive(b)) return a === b;
+  if (strict && Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) return false;
+  var aIsArgs = isArguments(a);
+  var bIsArgs = isArguments(b);
   if (aIsArgs && !bIsArgs || !aIsArgs && bIsArgs) return false;
   if (aIsArgs) {
     a = pSlice.call(a);
     b = pSlice.call(b);
-    return _deepEqual(a, b);
+    return _deepEqual(a, b, strict);
   }
-  var ka = objectKeys(a),
-      kb = objectKeys(b),
-      key,
-      i;
+  var ka = objectKeys(a);
+  var kb = objectKeys(b);
+  var key, i;
   // having the same number of owned properties (keys incorporates
   // hasOwnProperty)
-  if (ka.length != kb.length) return false;
+  if (ka.length !== kb.length) return false;
   //the same set of keys (although not necessarily the same order),
   ka.sort();
   kb.sort();
   //~~~cheap key test
   for (i = ka.length - 1; i >= 0; i--) {
-    if (ka[i] != kb[i]) return false;
+    if (ka[i] !== kb[i]) return false;
   }
   //equivalent values for every corresponding key, and
   //~~~possibly expensive deep test
   for (i = ka.length - 1; i >= 0; i--) {
     key = ka[i];
-    if (!_deepEqual(a[key], b[key])) return false;
+    if (!_deepEqual(a[key], b[key], strict, actualVisitedObjects)) return false;
   }
   return true;
 }
@@ -2610,10 +2693,17 @@ function objEquiv(a, b) {
 // assert.notDeepEqual(actual, expected, message_opt);
 
 assert.notDeepEqual = function notDeepEqual(actual, expected, message) {
-  if (_deepEqual(actual, expected)) {
+  if (_deepEqual(actual, expected, false)) {
     fail(actual, expected, message, 'notDeepEqual', assert.notDeepEqual);
   }
 };
+
+assert.notDeepStrictEqual = notDeepStrictEqual;
+function notDeepStrictEqual(actual, expected, message) {
+  if (_deepEqual(actual, expected, true)) {
+    fail(actual, expected, message, 'notDeepStrictEqual', notDeepStrictEqual);
+  }
+}
 
 // 9. The strict equality assertion tests strict equality, as determined by ===.
 // assert.strictEqual(actual, expected, message_opt);
@@ -2640,28 +2730,46 @@ function expectedException(actual, expected) {
 
   if (Object.prototype.toString.call(expected) == '[object RegExp]') {
     return expected.test(actual);
-  } else if (actual instanceof expected) {
-    return true;
-  } else if (expected.call({}, actual) === true) {
-    return true;
   }
 
-  return false;
+  try {
+    if (actual instanceof expected) {
+      return true;
+    }
+  } catch (e) {
+    // Ignore.  The instanceof check doesn't work for arrow functions.
+  }
+
+  if (Error.isPrototypeOf(expected)) {
+    return false;
+  }
+
+  return expected.call({}, actual) === true;
+}
+
+function _tryBlock(block) {
+  var error;
+  try {
+    block();
+  } catch (e) {
+    error = e;
+  }
+  return error;
 }
 
 function _throws(shouldThrow, block, expected, message) {
   var actual;
 
-  if (util.isString(expected)) {
+  if (typeof block !== 'function') {
+    throw new TypeError('"block" argument must be a function');
+  }
+
+  if (typeof expected === 'string') {
     message = expected;
     expected = null;
   }
 
-  try {
-    block();
-  } catch (e) {
-    actual = e;
-  }
+  actual = _tryBlock(block);
 
   message = (expected && expected.name ? ' (' + expected.name + ').' : '.') + (message ? ' ' + message : '.');
 
@@ -2669,7 +2777,11 @@ function _throws(shouldThrow, block, expected, message) {
     fail(actual, expected, 'Missing expected exception' + message);
   }
 
-  if (!shouldThrow && expectedException(actual, expected)) {
+  var userProvidedMessage = typeof message === 'string';
+  var isUnwantedException = !shouldThrow && util.isError(actual);
+  var isUnexpectedException = !shouldThrow && actual && !expected;
+
+  if (isUnwantedException && userProvidedMessage && expectedException(actual, expected) || isUnexpectedException) {
     fail(actual, expected, 'Got unwanted exception' + message);
   }
 
@@ -2682,18 +2794,16 @@ function _throws(shouldThrow, block, expected, message) {
 // assert.throws(block, Error_opt, message_opt);
 
 assert.throws = function (block, /*optional*/error, /*optional*/message) {
-  _throws.apply(this, [true].concat(pSlice.call(arguments)));
+  _throws(true, block, error, message);
 };
 
 // EXTENSION! This is annoying to write outside this module.
-assert.doesNotThrow = function (block, /*optional*/message) {
-  _throws.apply(this, [false].concat(pSlice.call(arguments)));
+assert.doesNotThrow = function (block, /*optional*/error, /*optional*/message) {
+  _throws(false, block, error, message);
 };
 
 assert.ifError = function (err) {
-  if (err) {
-    throw err;
-  }
+  if (err) throw err;
 };
 
 var objectKeys = Object.keys || function (obj) {
@@ -2703,9 +2813,196 @@ var objectKeys = Object.keys || function (obj) {
   }
   return keys;
 };
-},{"util/":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/util/util.js"}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/browser-resolve/empty.js":[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"util/":38}],34:[function(require,module,exports){
 
-},{}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/inherits/inherits_browser.js":[function(require,module,exports){
+},{}],35:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout() {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+})();
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while (len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+    return [];
+};
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+    return '/';
+};
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function () {
+    return 0;
+};
+},{}],36:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -2729,73 +3026,11 @@ if (typeof Object.create === 'function') {
     ctor.prototype.constructor = ctor;
   };
 }
-},{}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-var queue = [];
-var draining = false;
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    draining = true;
-    var currentQueue;
-    var len = queue.length;
-    while (len) {
-        currentQueue = queue;
-        queue = [];
-        var i = -1;
-        while (++i < len) {
-            currentQueue[i]();
-        }
-        len = queue.length;
-    }
-    draining = false;
-}
-process.nextTick = function (fun) {
-    queue.push(fun);
-    if (!draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-// TODO(shtylman)
-process.cwd = function () {
-    return '/';
-};
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function () {
-    return 0;
-};
-},{}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/util/support/isBufferBrowser.js":[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object' && typeof arg.copy === 'function' && typeof arg.fill === 'function' && typeof arg.readUInt8 === 'function';
 };
-},{}],"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/util/util.js":[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -3342,4 +3577,4 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/util/support/isBufferBrowser.js","_process":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/process/browser.js","inherits":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/inherits/inherits_browser.js"}]},{},["/Users/adam/projects/backgrounds/src/app.js"]);
+},{"./support/isBuffer":37,"_process":35,"inherits":36}]},{},[26]);

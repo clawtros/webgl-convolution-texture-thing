@@ -54,7 +54,6 @@ function randomCanvas(size) {
       data = imgdata.data;
 
   for (var i = 0; i < data.length; i += 4) {
-    var h = Math.random() * 255;
     data[i] = Math.random() * 255;
     data[i + 1] = Math.random() * 255;
     data[i + 2] = Math.random() * 255;
@@ -146,17 +145,12 @@ function TextureGenerator(options) {
   }
 
   function reset() {
-    var noiseCanvas = randomCanvas(resolution),
-        image = document.createElement("img");
-
-    image.width = resolution;
-    image.height = resolution;
-    image.src = noiseCanvas.toDataURL();
-    image.style.display = "none";
-    
-    document.body.appendChild(image);
-    
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+    var noiseCanvas = randomCanvas(resolution);
+    gl.texImage2D(
+      gl.TEXTURE_2D, 0,
+      gl.RGBA, gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      noiseCanvas.getContext('2d').getImageData(0, 0, resolution, resolution))
     
   }
   return {
