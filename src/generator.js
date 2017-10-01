@@ -33,7 +33,7 @@ var GLUtils = {
 function createAndSetupTexture(gl) {
   var texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
-
+  
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -78,11 +78,13 @@ function TextureGenerator(options) {
       buffer = gl.createBuffer(),
       convolveShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-fragment-shader'),
       vertexShader = GLUtils.compileShader(gl, gl.VERTEX_SHADER, '2d-vertex-shader'),
+      hsvShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-hsv-shader'),
+      hsvVertexShader = GLUtils.compileShader(gl, gl.VERTEX_SHADER, '2d-vertex-shader'),
+      hsvProgram = GLUtils.makeProgram(gl, hsvVertexShader, hsvShader),
       program = GLUtils.makeProgram(gl, vertexShader, convolveShader),
       positionLocation,
       resolutionLocation,
       kernelLocation,
-      yFlipLocation,
       currentFbo = 0,
       originalImageTexture = createAndSetupTexture(gl),
       textures = [],
@@ -117,28 +119,40 @@ function TextureGenerator(options) {
   );
 
   GLUtils.linkProgram(gl, program);
+  GLUtils.linkProgram(gl, hsvProgram);
+
+  gl.useProgram(program);  
   positionLocation = gl.getAttribLocation(program, "a_position");
   resolutionLocation = gl.getUniformLocation(program, "canvasPixels");
   kernelLocation = gl.getUniformLocation(program, "kernel");
-  yFlipLocation = gl.getUniformLocation(program, "yFlip");
 
   gl.enableVertexAttribArray(positionLocation);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
   gl.uniform1i(gl.getUniformLocation(program, "uSampler"), 0);
   gl.uniform1f(resolutionLocation, parseFloat(resolution));
 
-  reset();  
+  gl.useProgram(hsvProgram);
+  gl.uniform1i(gl.getUniformLocation(hsvProgram, "uSampler"), 0);
+  gl.uniform1f(gl.getUniformLocation(hsvProgram, "canvasPixels"), parseFloat(resolution));
 
-  function setFramebuffer(fbo, width, height) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-    gl.uniform1f(resolutionLocation, canvas.width);
-    gl.viewport(0, 0, width, height);
-  }
+  reset();  
+  gl.viewport(0, 0, canvas.width, canvas.height);
 
   function drawWithKernel(filter) {
-    setFramebuffer(framebuffers[currentFbo], canvas.width, canvas.height);
-    gl.uniform1fv(kernelLocation, filter);
-    gl.uniform1f(yFlipLocation, 1);
+    if (filter.length > 0) {
+      gl.useProgram(program);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffers[currentFbo]);
+      gl.uniform1fv(kernelLocation, filter);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
+      currentFbo = (currentFbo + 1) % 2;
+      
+    }
+  }
+
+  function drawWithHSV() {
+    gl.useProgram(hsvProgram)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffers[currentFbo]);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
     currentFbo = (currentFbo + 1) % 2;
@@ -164,11 +178,10 @@ function TextureGenerator(options) {
     show: function() {
       canvas.style.visibility = "visible";
     },
-
-    drawWithKernel: drawWithKernel,
+    drawWithHSV,
+    drawWithKernel,
     render: function() {
-      setFramebuffer(null, canvas.width, canvas.height);
-      gl.uniform1f(yFlipLocation, -1);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     },
     canvas: canvas

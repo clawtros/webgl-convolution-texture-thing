@@ -1,9 +1,10 @@
 module.exports = function(textureGenerator, presets, kernels) {
+  kernels["hsv"] = [];
   return {
     state: {
       isTiled: true,
       currentPreset: "coral",
-      kernelsToApply: presets["coral"],
+      kernelsToApply: [""],
       presets: presets,
       kernels: kernels,
       isRunning: true
@@ -23,8 +24,12 @@ module.exports = function(textureGenerator, presets, kernels) {
       update: (data, state, send, done) => {
         if (state.isRunning) {
           for (let kernelToApply of state.kernelsToApply) {
-            let {_, kernel} = kernelToApply;
-            textureGenerator.drawWithKernel(kernel);
+            if (kernelToApply.name != "hsv") {
+              let {_, kernel} = kernelToApply;
+              textureGenerator.drawWithKernel(kernel);
+            } else {
+              textureGenerator.drawWithHSV();
+            }
           }
         }                
         if (state.isTiled && state.isRunning) {

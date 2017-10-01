@@ -1,12 +1,15 @@
 const html = require("choo/html");
 
+const kernelContents = (name, kernel) => {
+  console.log(name)
+  return html`<div><pre class="kernel-matrix">${kernel.map((e, i) => e.toFixed(2) + ((i + 1) % 3 == 0 ? '\n' : ' '))}</pre><strong>${name}</strong></div>`;
+}
+
 const kernelElement = (name, kernel, onclick) => {  
   return html`
-<div class="kernel" onclick=${onclick}>
-  <pre class="kernel-matrix">${kernel.map((e, i) => e.toFixed(2) + ((i + 1) % 3 == 0 ? '\n' : ' '))}</pre>
-  <strong>${name}</strong>
-</div>
-`;
+    <div class="kernel" onclick=${onclick}>
+      ${kernelContents(name, kernel)}
+    </div>`;
 };
 
 module.exports = (state, prev, send) => {

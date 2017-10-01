@@ -2096,11 +2096,13 @@ function TextureGenerator(options) {
       buffer = gl.createBuffer(),
       convolveShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-fragment-shader'),
       vertexShader = GLUtils.compileShader(gl, gl.VERTEX_SHADER, '2d-vertex-shader'),
+      hsvShader = GLUtils.compileShader(gl, gl.FRAGMENT_SHADER, '2d-hsv-shader'),
+      hsvVertexShader = GLUtils.compileShader(gl, gl.VERTEX_SHADER, '2d-vertex-shader'),
+      hsvProgram = GLUtils.makeProgram(gl, hsvVertexShader, hsvShader),
       program = GLUtils.makeProgram(gl, vertexShader, convolveShader),
       positionLocation,
       resolutionLocation,
       kernelLocation,
-      yFlipLocation,
       currentFbo = 0,
       originalImageTexture = createAndSetupTexture(gl),
       textures = [],
@@ -2123,28 +2125,39 @@ function TextureGenerator(options) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0]), gl.STATIC_DRAW);
 
   GLUtils.linkProgram(gl, program);
+  GLUtils.linkProgram(gl, hsvProgram);
+
+  gl.useProgram(program);
   positionLocation = gl.getAttribLocation(program, "a_position");
   resolutionLocation = gl.getUniformLocation(program, "canvasPixels");
   kernelLocation = gl.getUniformLocation(program, "kernel");
-  yFlipLocation = gl.getUniformLocation(program, "yFlip");
 
   gl.enableVertexAttribArray(positionLocation);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
   gl.uniform1i(gl.getUniformLocation(program, "uSampler"), 0);
   gl.uniform1f(resolutionLocation, parseFloat(resolution));
 
-  reset();
+  gl.useProgram(hsvProgram);
+  gl.uniform1i(gl.getUniformLocation(hsvProgram, "uSampler"), 0);
+  gl.uniform1f(gl.getUniformLocation(hsvProgram, "canvasPixels"), parseFloat(resolution));
 
-  function setFramebuffer(fbo, width, height) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-    gl.uniform1f(resolutionLocation, canvas.width);
-    gl.viewport(0, 0, width, height);
-  }
+  reset();
+  gl.viewport(0, 0, canvas.width, canvas.height);
 
   function drawWithKernel(filter) {
-    setFramebuffer(framebuffers[currentFbo], canvas.width, canvas.height);
-    gl.uniform1fv(kernelLocation, filter);
-    gl.uniform1f(yFlipLocation, 1);
+    if (filter.length > 0) {
+      gl.useProgram(program);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffers[currentFbo]);
+      gl.uniform1fv(kernelLocation, filter);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
+      currentFbo = (currentFbo + 1) % 2;
+    }
+  }
+
+  function drawWithHSV() {
+    gl.useProgram(hsvProgram);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffers[currentFbo]);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.bindTexture(gl.TEXTURE_2D, textures[currentFbo]);
     currentFbo = (currentFbo + 1) % 2;
@@ -2164,11 +2177,10 @@ function TextureGenerator(options) {
     show: function () {
       canvas.style.visibility = "visible";
     },
-
-    drawWithKernel: drawWithKernel,
+    drawWithHSV,
+    drawWithKernel,
     render: function () {
-      setFramebuffer(null, canvas.width, canvas.height);
-      gl.uniform1f(yFlipLocation, -1);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     },
     canvas: canvas
@@ -2195,11 +2207,12 @@ module.exports = {
 };
 },{}],29:[function(require,module,exports){
 module.exports = function (textureGenerator, presets, kernels) {
+  kernels["hsv"] = [];
   return {
     state: {
       isTiled: true,
       currentPreset: "coral",
-      kernelsToApply: presets["coral"],
+      kernelsToApply: [""],
       presets: presets,
       kernels: kernels,
       isRunning: true
@@ -2217,8 +2230,12 @@ module.exports = function (textureGenerator, presets, kernels) {
       update: function (data, state, send, done) {
         if (state.isRunning) {
           for (var kernelToApply of state.kernelsToApply) {
-            var { _, kernel } = kernelToApply;
-            textureGenerator.drawWithKernel(kernel);
+            if (kernelToApply.name != "hsv") {
+              var { _, kernel } = kernelToApply;
+              textureGenerator.drawWithKernel(kernel);
+            } else {
+              textureGenerator.drawWithHSV();
+            }
           }
         }
         if (state.isTiled && state.isRunning) {
@@ -2304,19 +2321,25 @@ module.exports = function (state, prev, send) {
   return html(_templateObject);
 };
 },{"choo/html":4}],32:[function(require,module,exports){
-var _templateObject = _taggedTemplateLiteral(['\n<div class="kernel" onclick=', '>\n  <pre class="kernel-matrix">', '</pre>\n  <strong>', '</strong>\n</div>\n'], ['\n<div class="kernel" onclick=', '>\n  <pre class="kernel-matrix">', '</pre>\n  <strong>', '</strong>\n</div>\n']),
-    _templateObject2 = _taggedTemplateLiteral(['\n   <div role="menu">\n     <a role="top-nav" href="#/about/">About</a>\n     <h3>Presets</h3>\n     <select onchange=', '>\n       ', '\n     </select>\n     <h3>Available Kernels</h3>\n     <ul>\n       ', '\n     </ul>\n     <h3>Applied Kernels</h3>\n     <ul class="applied-kernels">\n       ', '\n     </ul>\n     <button onclick=', '>reset to noise</button>\n     <button onclick=', '>', '</button>\n   </div>\n'], ['\n   <div role="menu">\n     <a role="top-nav" href="#/about/">About</a>\n     <h3>Presets</h3>\n     <select onchange=', '>\n       ', '\n     </select>\n     <h3>Available Kernels</h3>\n     <ul>\n       ', '\n     </ul>\n     <h3>Applied Kernels</h3>\n     <ul class="applied-kernels">\n       ', '\n     </ul>\n     <button onclick=', '>reset to noise</button>\n     <button onclick=', '>', '</button>\n   </div>\n']),
-    _templateObject3 = _taggedTemplateLiteral(['<option selected=', ' value=', '>', '</option>'], ['<option selected=', ' value=', '>', '</option>']),
-    _templateObject4 = _taggedTemplateLiteral(['\n       <li onclick=', '>', '</li>\n       '], ['\n       <li onclick=', '>', '</li>\n       ']);
+var _templateObject = _taggedTemplateLiteral(['<div><pre class="kernel-matrix">', '</pre><strong>', '</strong></div>'], ['<div><pre class="kernel-matrix">', '</pre><strong>', '</strong></div>']),
+    _templateObject2 = _taggedTemplateLiteral(['\n    <div class="kernel" onclick=', '>\n      ', '\n    </div>'], ['\n    <div class="kernel" onclick=', '>\n      ', '\n    </div>']),
+    _templateObject3 = _taggedTemplateLiteral(['\n   <div role="menu">\n     <a role="top-nav" href="#/about/">About</a>\n     <h3>Presets</h3>\n     <select onchange=', '>\n       ', '\n     </select>\n     <h3>Available Kernels</h3>\n     <ul>\n       ', '\n     </ul>\n     <h3>Applied Kernels</h3>\n     <ul class="applied-kernels">\n       ', '\n     </ul>\n     <button onclick=', '>reset to noise</button>\n     <button onclick=', '>', '</button>\n   </div>\n'], ['\n   <div role="menu">\n     <a role="top-nav" href="#/about/">About</a>\n     <h3>Presets</h3>\n     <select onchange=', '>\n       ', '\n     </select>\n     <h3>Available Kernels</h3>\n     <ul>\n       ', '\n     </ul>\n     <h3>Applied Kernels</h3>\n     <ul class="applied-kernels">\n       ', '\n     </ul>\n     <button onclick=', '>reset to noise</button>\n     <button onclick=', '>', '</button>\n   </div>\n']),
+    _templateObject4 = _taggedTemplateLiteral(['<option selected=', ' value=', '>', '</option>'], ['<option selected=', ' value=', '>', '</option>']),
+    _templateObject5 = _taggedTemplateLiteral(['\n       <li onclick=', '>', '</li>\n       '], ['\n       <li onclick=', '>', '</li>\n       ']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var html = require("choo/html");
 
-var kernelElement = function (name, kernel, onclick) {
-  return html(_templateObject, onclick, kernel.map(function (e, i) {
+var kernelContents = function (name, kernel) {
+  console.log(name);
+  return html(_templateObject, kernel.map(function (e, i) {
     return e.toFixed(2) + ((i + 1) % 3 == 0 ? '\n' : ' ');
   }), name);
+};
+
+var kernelElement = function (name, kernel, onclick) {
+  return html(_templateObject2, onclick, kernelContents(name, kernel));
 };
 
 module.exports = function (state, prev, send) {
@@ -2325,14 +2348,14 @@ module.exports = function (state, prev, send) {
       return send("addKernel", { "name": kernelName, "kernel": state.kernels[kernelName] });
     };
   };
-  return html(_templateObject2, function (e) {
+  return html(_templateObject3, function (e) {
     return send("setPreset", e.target.value);
   }, Object.keys(state.presets).map(function (preset) {
-    return html(_templateObject3, preset === state.currentPreset, preset, preset);
+    return html(_templateObject4, preset === state.currentPreset, preset, preset);
   }), Object.keys(state.kernels).map(function (kernelName) {
     return kernelElement(kernelName, state.kernels[kernelName], onKernelClick(kernelName));
   }), state.kernelsToApply.map(function (kernel, index) {
-    return html(_templateObject4, function () {
+    return html(_templateObject5, function () {
       return send("removeKernel", index);
     }, kernel.name);
   }), function (_) {
