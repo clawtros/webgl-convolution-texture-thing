@@ -16,7 +16,7 @@ app.router(
 window.startApp = () => {
   const textureGenerator = TextureGenerator({
     canvasId: "c",
-    resolution: 256
+    resolution: 2048
   });
 
   app.model(
